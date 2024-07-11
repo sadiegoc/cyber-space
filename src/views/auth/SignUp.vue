@@ -17,6 +17,8 @@
     </div>
 </template>
 <script>
+import DatabaseService from '@/services/database.service';
+
 export default {
     name: 'SignUp',
     data () {
@@ -30,9 +32,7 @@ export default {
     },
     methods: {
         signUp () {
-            console.log(`name: ${this.user.name}`);
-            console.log(`username: ${this.user.username}`);
-            console.log(`password: ${this.user.password}`);
+            DatabaseService.insert(this.user);
         }
     }
 }
