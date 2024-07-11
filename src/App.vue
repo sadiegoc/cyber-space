@@ -10,9 +10,10 @@ export default {
 
 <style>
 * {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 600;
+  margin: 0; padding: 0;
+}
+
+#app {
+  width: 100vw; height: 100vh;
 }
 </style>
