@@ -17,8 +17,6 @@
     </div>
 </template>
 <script>
-import DatabaseService from '@/services/database.service';
-
 export default {
     name: 'SignUp',
     data () {
@@ -31,9 +29,7 @@ export default {
         }
     },
     methods: {
-        signUp () {
-            DatabaseService.insert(this.user);
-        }
+        signUp () {}
     }
 }
 </script>
