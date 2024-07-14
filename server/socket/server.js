@@ -11,6 +11,10 @@ const io = new Server(server, {
     }
 });
 
+app.get("/", (req, res) => {
+    res.send('<h1 style="text-align: center">socket server: on</h1>');
+});
+
 io.on('connection', (socket) => {
     console.log(`user ${socket.id} is connected`);
 

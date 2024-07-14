@@ -1,6 +1,7 @@
 import SignIn from "@/views/auth/SignIn.vue";
 import SignUp from "@/views/auth/SignUp.vue";
 import CyberSpace from "@/views/CyberSpace.vue";
+import ChatComponent from '@/components/ChatComponent.vue'
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -8,6 +9,10 @@ const routes = [
         path: '/',
         name: 'CyberSpace',
         component: CyberSpace
+    }, {
+        path: '/chat/:id',
+        name: 'chat-component',
+        component: ChatComponent
     }, {
         path: '/sign-up',
         name: 'SignUp',

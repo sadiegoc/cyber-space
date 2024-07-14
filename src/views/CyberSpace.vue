@@ -6,6 +6,11 @@
 <script>
 export default {
     name: 'CyberSpace',
+    data () {
+        return {
+            user: {}
+        }
+    },
     methods: {
         loadData () {
             this.user = localStorage.getItem("user-info");
