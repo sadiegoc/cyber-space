@@ -1,5 +1,6 @@
 const db = require('../models');
 const Auth = db.auths;
+const Op = db.Sequelize.Op;
 
 // create and save a new user
 exports.create = (req, res) => {
@@ -37,25 +38,19 @@ exports.create = (req, res) => {
         });
 };
 
-exports.getAll = (req, res) => {
-    Auth.findAll().then(data => res.send(data)).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error ocurred while retrieving users."
-        });
-    });
-};
-
 exports.get = (req, res) => {
-    const id = req.params.id;
+    const u = req.query.username;
+    const p = req.query.password;
 
-    Auth.findByPk(id)
-        .then(data => {
-            if (data) res.send(data)
-            else res.status(404).send({ message: `Cannot find user with id = ${id}.` });
-        })
-        .catch(err => {
-            res.status(500).send({ message: `Error retrieving user with id = ${id}` });
-        })
+    if (u && p) {
+        Auth.findAll({ where: { [Op.and] : [{ username: u }, { password: p }] } })
+            .then(data => res.status(200).send(data))
+            .catch(err => {
+                res.status(500).send({
+                    message: err.message || "Some error ocurred while login user."
+                });
+            });
+    } else res.status(404).send({ status: "error" });
 };
 
 exports.update = (req, res) => {

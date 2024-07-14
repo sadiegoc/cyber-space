@@ -1,16 +1,12 @@
 import http from "@/http-common";
 
 class UsersService {
-    create (data) {
+    register (data) {
         return http.post("/auth", data);
     }
 
-    getAll () {
-        return http.get("/auth");
-    }
-
-    get (id) {
-        return http.get(`/auth/${id}`);
+    login (user) {
+        return http.get(`/auth?username=${user.username}&&password=${user.password}`);
     }
 
     update (id, data) {

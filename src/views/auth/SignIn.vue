@@ -11,27 +11,50 @@
                 <p>
                     <router-link class="sign-link" to="/sign-up">Sign Up</router-link>
                 </p>
+                <p v-if="error" style="color: brown; margin-top: 20px">username or password incorrect</p>
             </div>
         </div>
     </div>
 </template>
 <script>
+import usersService from '@/services/users.service';
+
 export default {
-    name: 'SignIn',
-    data () {
-        return {
-            user: {
-                username: "",
-                password: ""
-            }
+  name: 'SignIn',
+  data () {
+      return {
+          user: {
+              username: "",
+              password: ""
+          },
+          error: false
+      }
+  },
+  methods: {
+    signIn () {
+        if (this.user.username && this.user.password) {
+          usersService.login(this.user)
+            .then(response => {
+              if (response.status == 200)
+                this.redirect();
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
     },
-    methods: {
-        signIn () {
-            console.log(`username: ${this.user.username}`);
-            console.log(`password: ${this.user.password}`);
-        }
+    redirect () {
+      localStorage.setItem("user", JSON.stringify(this.user));
+      this.$router.push({ name: 'CyberSpace' });
+    },
+    loadData () {
+      if (localStorage.getItem("user"))
+        this.$router.push({ name: 'CyberSpace' });
     }
+  },
+  mounted () {
+    this.loadData();
+  }
 }
 </script>
 <style>

@@ -21,38 +21,45 @@
 import usersService from '@/services/users.service';
 
 export default {
-    name: 'SignUp',
-    data () {
-        return {
-            user: {
-                name: "",
-                username: "",
-                password: ""
-            },
-            error: false
-        }
+  name: 'SignUp',
+  data () {
+      return {
+          user: {
+              name: "",
+              username: "",
+              password: ""
+          },
+          error: false
+      }
+  },
+  methods: {
+    signUp () {
+      if (this.user.name && this.user.username && this.user.password) {
+        usersService.register(this.user)
+          .then(response => {
+            if (response.data.message == "username")
+              this.error = true;
+            else {
+              this.redirect();
+            }
+          })
+          .catch(err => {
+            console.log(err.message);
+          });
+      }
     },
-    methods: {
-        signUp () {
-          if (this.user.name && this.user.username && this.user.password) {
-            usersService.create(this.user)
-              .then(response => {
-                if (response.data.message == "username")
-                  this.error = true;
-                else {
-                  this.redirect();
-                }
-              })
-              .catch(err => {
-                console.log(err.message);
-              });
-          }
-        },
-        redirect () {
-          localStorage.setItem("user", JSON.stringify(this.user));
-          this.$router.push({ name: 'CyberSpace' });
-        }
+    redirect () {
+      localStorage.setItem("user", JSON.stringify(this.user));
+      this.$router.push({ name: 'CyberSpace' });
+    },
+    loadData () {
+      if (localStorage.getItem("user"))
+        this.$router.push({ name: 'CyberSpace' });
     }
+  },
+  mounted () {
+    this.loadData();
+  }
 }
 </script>
 <style>
