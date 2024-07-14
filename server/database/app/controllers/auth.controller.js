@@ -17,19 +17,28 @@ exports.create = (req, res) => {
     }
 
     // save user in the database
+    console.log(auth);
     Auth.create(auth)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error ocurred while creating the user."
-            });
+            if (err.name == "SequelizeUniqueConstraintError") {
+                res.status(200).send({
+                    status: "error",
+                    message: "username"
+                });
+            } else {
+                res.status(500).send({
+                    status: "error",
+                    message: err.message || "Some error occurred while creating the user."
+                });
+            }
         });
 };
 
 exports.getAll = (req, res) => {
-    Auth.getAll().then(data => res.send(data)).catch(err => {
+    Auth.findAll().then(data => res.send(data)).catch(err => {
         res.status(500).send({
             message: err.message || "Some error ocurred while retrieving users."
         });

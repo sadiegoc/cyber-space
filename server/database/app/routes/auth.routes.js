@@ -1,22 +1,22 @@
 module.exports = app => {
-    const auths = require('../controllers/auth.controller.js');
+    const auth = require('../controllers/auth.controller');
 
     var router = require("express").Router();
 
     // create a new user
-    router.post("/", auths.create);
+    router.post("/", auth.create);
 
     // retrieve all users
-    router.get("/", auths.getAll);
+    router.get("/", auth.getAll);
 
     // retrieve one user by id
-    router.get("/:id", auths.get);
+    router.get("/:id", auth.get);
 
     // update a user with id
-    router.put("/:id", auths.update);
+    router.put("/:id", auth.update);
 
     // delete a user by id
-    router.delete("/:id", auths.delete);
+    router.delete("/:id", auth.delete);
 
     app.use('/auth', router);
 };

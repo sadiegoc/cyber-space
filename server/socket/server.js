@@ -29,6 +29,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
-    console.log('server is listenning on http://localhost:3000');
+server.listen(8888, () => {
+    console.log('server is listenning on http://localhost:8888');
 });

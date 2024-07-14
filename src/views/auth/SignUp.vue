@@ -3,20 +3,23 @@
         <div class="sign-title">
             <h1>Sign Up</h1>
         </div>
-        <div class="form">
-            <div class="container">
-                <input type="text" v-model="user.name" placeholder="Enter your name"/>
-                <input type="text" v-model="user.username" placeholder="Enter your username"/>
-                <input type="password" v-model="user.password" placeholder="Enter your password"/>
-                <button v-on:click="signUp">Sign Up</button>
-                <p>
-                    <router-link class="sign-link" to="/sign-in">Sign In</router-link>
-                </p>
-            </div>
-        </div>
+        <form class="form" @submit.prevent="signUp">
+          <div class="container">
+              <input type="text" v-model="user.name" placeholder="Enter your name"/>
+              <input type="text" v-model="user.username" placeholder="Enter your username"/>
+              <input type="password" v-model="user.password" placeholder="Enter your password"/>
+              <button type="submit">Sign Up</button>
+              <p>
+                  <router-link class="sign-link" to="/sign-in">Sign In</router-link>
+              </p>
+              <p v-if="error" style="color: brown; margin-top: 20px">username already exists</p>
+          </div>
+        </form>
     </div>
 </template>
 <script>
+import usersService from '@/services/users.service';
+
 export default {
     name: 'SignUp',
     data () {
@@ -25,11 +28,30 @@ export default {
                 name: "",
                 username: "",
                 password: ""
-            }
+            },
+            error: false
         }
     },
     methods: {
-        signUp () {}
+        signUp () {
+          if (this.user.name && this.user.username && this.user.password) {
+            usersService.create(this.user)
+              .then(response => {
+                if (response.data.message == "username")
+                  this.error = true;
+                else {
+                  this.redirect();
+                }
+              })
+              .catch(err => {
+                console.log(err.message);
+              });
+          }
+        },
+        redirect () {
+          localStorage.setItem("user", JSON.stringify(this.user));
+          this.$router.push({ name: 'CyberSpace' });
+        }
     }
 }
 </script>

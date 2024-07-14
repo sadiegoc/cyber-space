@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/auth.routes")(app);
-require("./app/routes/messages.routes")(app);
+// require("./app/routes/messages.routes")(app);
 
 app.listen(PORT, () => {
     console.log(`database server is running on http://localhost:${PORT}`);

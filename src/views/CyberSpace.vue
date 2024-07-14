@@ -13,10 +13,9 @@ export default {
     },
     methods: {
         loadData () {
-            this.user = localStorage.getItem("user-info");
-            if (!this.user) {
+            this.user = localStorage.getItem("user");
+            if (!this.user)
                 this.$router.push({ name: 'SignUp' });
-            }
         }
     },
     mounted () {
