@@ -18,8 +18,8 @@ export default {
 </script>
 <style>
 #users-list {
-    background-color: #222 !important; color: white;
-    width: 300px; height: 100vh;
+    background-color: #161616 !important; color: white;
+    width: 350px; height: 100%;
 }
 
 @media (min-width: 992px) {

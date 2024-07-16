@@ -1,6 +1,18 @@
 import http from "@/http-common";
+import { io } from "socket.io-client";
 
 class MessagesService {
+    socket;
+
+    setupSocketConnection () {
+        this.socket = io('http://localhost:8888');
+    }
+
+    disconnect () {
+        if (this.socket)
+            this.socket.disconnect();
+    }
+
     create (data) {
         return http.post("/messages", data);
     }
