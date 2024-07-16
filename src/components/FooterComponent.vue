@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="footer">
         
     </div>
 </template>
 <script>
 export default {
-    name: "chat-component"
+    name: 'FooterComponent'
 }
 </script>
 <style>
