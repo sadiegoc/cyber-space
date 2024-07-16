@@ -1,7 +1,7 @@
 <template>
     <div class="display-chat">
         <ul class="messages">
-            <li v-for="m in messages" :key="m.id" :class="m.author == myself ? 'right' : 'left'">
+            <li v-for="m in messages" :key="m.author" :class="m.author == myself ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
         </ul>
@@ -16,27 +16,30 @@ import MessagesService from '@/services/messages.service';
 
 export default {
     name: 'DisplayChat',
+    props: ['myself'],
     data () {
         return {
-            myself: "sadiegoc",
+            socket: null,
             message: "",
-            messages: [
-                {id: 1, content: 'Olá, tudo bom?', author: 'sadiegoc'},
-                {id: 2, content: 'Olá, tudo sim', author: 'snubia'},
-                {id: 3, content: 'E com você?', author: 'snubia'},
-            ]
+            messages: []
         }
     },
     methods: {
         send () {
             if (this.message) {
-                //
+                var msg = { author: this.myself, content: this.message };
+                this.messages.push(msg);
+                this.socket.emit('message', JSON.stringify(msg));
             }
             this.message = "";
         }
     },
     mounted () {
         MessagesService.setupSocketConnection();
+        this.socket = MessagesService.socket;
+        this.socket.on('broadcast', (data) => {
+            this.messages.push(JSON.parse(data));
+        });
     },
     unmounted () {
         MessagesService.disconnect();

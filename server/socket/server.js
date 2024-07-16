@@ -23,8 +23,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on("message", (data) => {
-        console.log("message received by the server: " + data);
-        // socket.broadcast.emit("message:received", data);
+        // console.log("message received by the server: " + data);
+        socket.broadcast.emit("broadcast", data);
         // console.log("message sent by the server: " + data);
     });
 });

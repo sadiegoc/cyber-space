@@ -13,6 +13,10 @@ class MessagesService {
             this.socket.disconnect();
     }
 
+    send (data) {
+        this.socket.emit("message", data);
+    }
+
     create (data) {
         return http.post("/messages", data);
     }

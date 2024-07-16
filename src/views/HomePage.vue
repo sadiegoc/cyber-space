@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <UsersList/>
-        <DisplayChat/>
+        <DisplayChat :myself="this.user.username"/>
     </div>
 </template>
 <script>
