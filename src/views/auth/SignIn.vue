@@ -43,7 +43,6 @@ export default {
             .then(response => {
               if (response.status == 200) {
                 this.redirect(response.data[0]);
-                this.error = false;
               }
             })
             .catch(err => {

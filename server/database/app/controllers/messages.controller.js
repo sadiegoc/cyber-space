@@ -12,8 +12,10 @@ exports.create = (req, res) => {
     // create a message object
     const message = {
         owner: req.body.owner,
-        conent: req.body.content,
+        content: req.body.content,
     }
+
+    console.log(message)
 
     // save message in the table
     Message.create(message)

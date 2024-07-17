@@ -29,16 +29,19 @@ export default {
             if (this.message) {
                 var msg = { owner: this.myself, content: this.message };
                 this.messages.push(msg);
-                MessagesService.send(msg);
+                MessagesService.send(msg)
+                    .then(response => console.log(response))
+                    .catch(err => console.log(err.message));
+                this.message = "";
             }
-            this.message = "";
         }
     },
-    mounted () {
+    async mounted () {
         MessagesService.setupSocketConnection();
         MessagesService.socket.on('broadcast', (data) => {
             this.messages.push(JSON.parse(data));
         });
+        await MessagesService.getAll().then(response => this.messages = response.data);
     },
     unmounted () {
         MessagesService.disconnect();
