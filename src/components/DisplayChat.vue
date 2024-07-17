@@ -1,10 +1,9 @@
 <template>
     <div class="display-chat">
         <ul class="messages">
-            <li v-for="m in messages" :key="m.owner" :class="m.owner == myself ? 'right' : 'left'">
+            <li v-for="(m, i) in messages" :key="i" :class="m.owner == myself ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
-            <div id="anchor"></div>
         </ul>
         <div class="form">
             <input @keyup.enter="send" v-model="message" type="text" autocomplete="off"/>
@@ -29,12 +28,22 @@ export default {
         send () {
             if (this.message) {
                 var msg = { owner: this.myself, content: this.message };
-                this.messages.push(msg);
-                MessagesService.send(msg)
-                    .then(response => console.log(response))
-                    .catch(err => console.log(err.message));
+                this.appendMsg(msg);
+                this.sendSocketMsg(msg);
                 this.message = "";
             }
+        },
+        scroll () {
+            const m = document.querySelector('.messages');
+            m.scrollTo(0, m.scrollHeight);
+        },
+        appendMsg (msg) {
+            this.messages.push(msg);
+        },
+        sendSocketMsg (msg) {
+            MessagesService.send(msg)
+                .then(response => console.log(response))
+                .catch(err => console.log(err.message));
         }
     },
     async mounted () {
@@ -43,6 +52,7 @@ export default {
             this.messages.push(JSON.parse(data));
         });
         await MessagesService.getAll().then(response => this.messages = response.data);
+        this.scroll();
     },
     unmounted () {
         MessagesService.disconnect();
@@ -58,10 +68,10 @@ export default {
 }
 
 .display-chat .messages {
-    margin: 0; padding: 8px 0;
+    margin: 0; padding: 0;
     height: calc(100% - 60px); width: 100%;
     list-style: none; position: absolute;
-    overflow-y: scroll; overflow-anchor: auto;
+    overflow-y: scroll; display: flex; flex-direction: column;
 }
 
 .display-chat .messages::-webkit-scrollbar {
