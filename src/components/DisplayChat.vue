@@ -4,6 +4,7 @@
             <li v-for="m in messages" :key="m.owner" :class="m.owner == myself ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
+            <div id="anchor"></div>
         </ul>
         <div class="form">
             <input @keyup.enter="send" v-model="message" type="text" autocomplete="off"/>
@@ -53,17 +54,18 @@ export default {
     margin: 0; padding: 0;
     color: white; width: 100%;
     position: relative;
+    background-color: #191919;
 }
 
 .display-chat .messages {
     margin: 0; padding: 8px 0;
     height: calc(100% - 60px); width: 100%;
     list-style: none; position: absolute;
-    overflow-y: scroll; background-color: #131313;
+    overflow-y: scroll; overflow-anchor: auto;
 }
 
 .display-chat .messages::-webkit-scrollbar {
-    width: 8px; background-color: #f4f4f4;
+    width: 8px; background-color: transparent;
 }
 
 .display-chat .messages::-webkit-scrollbar-thumb {
@@ -99,7 +101,8 @@ export default {
 .form input {
     border: none; padding: 0 1rem;
     flex-grow: 1; border-radius: 40px; margin: 4px;
-    font-size: 0.8rem;
+    font-size: 0.8rem; background-color: #222;
+    color: white;
 }
 
 .form input:focus {
@@ -107,12 +110,12 @@ export default {
 }
 
 .form .btn {
-    background-color: #333;
+    background-color: #DC7633;
     margin: 0.25rem; color: white;
 }
 
 .form .btn:hover {
-    background-color: #222;
+    background-color: #D35400;
 }
 
 @media (max-width: 992px) {
