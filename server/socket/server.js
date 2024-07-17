@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
+const PORT = 8888;
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -29,6 +31,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(8888, () => {
-    console.log('server is listenning on http://localhost:8888');
+server.listen(PORT, () => {
+    console.log(`server is listenning on http://localhost:${PORT}`);
 });

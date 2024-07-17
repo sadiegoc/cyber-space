@@ -1,7 +1,7 @@
 <template>
     <div class="display-chat">
         <ul class="messages">
-            <li v-for="m in messages" :key="m.author" :class="m.author == myself ? 'right' : 'left'">
+            <li v-for="m in messages" :key="m.owner" :class="m.owner == myself ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
         </ul>
@@ -27,17 +27,16 @@ export default {
     methods: {
         send () {
             if (this.message) {
-                var msg = { author: this.myself, content: this.message };
+                var msg = { owner: this.myself, content: this.message };
                 this.messages.push(msg);
-                this.socket.emit('message', JSON.stringify(msg));
+                MessagesService.send(msg);
             }
             this.message = "";
         }
     },
     mounted () {
         MessagesService.setupSocketConnection();
-        this.socket = MessagesService.socket;
-        this.socket.on('broadcast', (data) => {
+        MessagesService.socket.on('broadcast', (data) => {
             this.messages.push(JSON.parse(data));
         });
     },

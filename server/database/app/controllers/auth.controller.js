@@ -1,5 +1,5 @@
 const db = require('../models');
-const Auth = db.auths;
+const Auth = db.auth;
 const Op = db.Sequelize.Op;
 
 // create and save a new user
@@ -46,11 +46,9 @@ exports.get = (req, res) => {
         Auth.findAll({ where: { [Op.and] : [{ username: u }, { password: p }] } })
             .then(data => res.status(200).send(data))
             .catch(err => {
-                res.status(500).send({
-                    message: err.message || "Some error ocurred while login user."
-                });
+                res.status(500).send({ message: err.message });
             });
-    } else res.status(404).send({ status: "error" });
+    } else res.status(200).send({ status: "error" });
 };
 
 exports.update = (req, res) => {
@@ -62,7 +60,7 @@ exports.update = (req, res) => {
             else res.send({ message: "Cannot update user with id = " + id + ". Maybe user was not found or req.body is empty!"})
         })
         .catch(err => {
-            res.status(500).send({ message: "Error updating user with id = " + id + "."});
+            res.status(500).send({ message: err.message });
         });
 };
 
@@ -75,6 +73,6 @@ exports.delete = (req, res) => {
             else res.send({ message: "Cannot delete user with id = " + id + ". Maybe user was not found."});
         })
         .catch(err => {
-            res.status(500).send({ message: "Could not delete user with id = " + id + "."});
+            res.status(500).send({ message: err.message });
         });
 };

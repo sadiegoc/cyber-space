@@ -14,7 +14,8 @@ class MessagesService {
     }
 
     send (data) {
-        this.socket.emit("message", data);
+        this.socket.emit("message", JSON.stringify(data));
+        // return http.post('/messages', data);
     }
 
     create (data) {

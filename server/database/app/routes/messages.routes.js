@@ -7,16 +7,13 @@ module.exports = app => {
     router.post("/", messages.create);
 
     // retrieve all users
-    router.get("/", messages.getAll);
+    router.get("/", messages.get);
 
-    // retrieve one user by id
-    router.get("/:id", messages.get);
+    // // update a user with id
+    // router.put("/:id", messages.update);
 
-    // update a user with id
-    router.put("/:id", messages.update);
-
-    // delete a user by id
-    router.delete("/:id", messages.delete);
+    // // delete a user by id
+    // router.delete("/:id", messages.delete);
 
     app.use('/messages', router);
 };

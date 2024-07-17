@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const PORT = 8088;
@@ -28,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/auth.routes")(app);
-// require("./app/routes/messages.routes")(app);
+require("./app/routes/messages.routes")(app);
 
 app.listen(PORT, () => {
     console.log(`database server is running on http://localhost:${PORT}`);

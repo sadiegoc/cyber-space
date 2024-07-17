@@ -19,6 +19,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.auths = require("./auth.model.js")(sequelize, Sequelize);
+db.auth = require("./auth.model.js")(sequelize, Sequelize);
+db.message = require("./message.model.js")(sequelize, Sequelize);
 
 module.exports = db;
