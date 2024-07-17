@@ -1,12 +1,13 @@
 <template>
     <div class="display-chat">
         <ul class="messages">
-            <li v-for="(m, i) in messages" :key="i" :class="m.owner == myself ? 'right' : 'left'">
+            <li v-for="m in messages" :key="m.id" :class="m.owner == myself ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
+            <div ref="anchor" id="anchor"></div>
         </ul>
         <div class="form">
-            <input @keyup.enter="send" v-model="message" type="text" autocomplete="off"/>
+            <input @keyup.enter="send" id="message" ref="message" v-model="message" type="text" autocomplete="off"/>
             <button @click="send" class="btn">Send</button>
         </div>
     </div>
@@ -32,27 +33,35 @@ export default {
                 this.sendSocketMsg(msg);
                 this.message = "";
             }
+            this.scroll();
+            this.focus();
         },
         scroll () {
-            const m = document.querySelector('.messages');
-            m.scrollTo(0, m.scrollHeight);
+            window.location.href = '#anchor';
+            // this.$refs.anchor.
+        },
+        focus () {
+            this.$refs.message.focus();
+            // window.location.href = '#message';
         },
         appendMsg (msg) {
             this.messages.push(msg);
         },
         sendSocketMsg (msg) {
             MessagesService.send(msg)
-                .then(response => console.log(response))
+                .then(response => console.log(response.data))
                 .catch(err => console.log(err.message));
         }
     },
     async mounted () {
         MessagesService.setupSocketConnection();
+        await MessagesService.getAll().then(response => this.messages = response.data);
         MessagesService.socket.on('broadcast', (data) => {
             this.messages.push(JSON.parse(data));
+            this.scroll();
         });
-        await MessagesService.getAll().then(response => this.messages = response.data);
         this.scroll();
+        this.focus();
     },
     unmounted () {
         MessagesService.disconnect();
@@ -68,7 +77,7 @@ export default {
 }
 
 .display-chat .messages {
-    margin: 0; padding: 0;
+    margin: 0; padding: 10px 0;
     height: calc(100% - 60px); width: 100%;
     list-style: none; position: absolute;
     overflow-y: scroll; display: flex; flex-direction: column;
