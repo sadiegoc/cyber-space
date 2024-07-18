@@ -7,7 +7,7 @@
             </div>
             <div class="offcanvas-body">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
+                    <a class="list-group-item list-group-item-action" :class="{ active: active }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
                         {{ u.name + '/@' + u.username }}
                     </a>
                 </div>
@@ -23,7 +23,8 @@ export default {
     props: ['myself'],
     data () {
         return {
-            users: []
+            users: [],
+            active: false
         }
     },methods: {
         loadUsers () {
@@ -33,6 +34,7 @@ export default {
         },
         selectChat (rec) {
             this.$emit('receiver', rec);
+            this.active = true;
         }
     },
     mounted () {
@@ -40,7 +42,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 #users-list {
     background-color: #161616 !important; color: white;
     width: 350px; height: 100%;
@@ -50,20 +52,36 @@ export default {
     opacity: 1; color: white;
 }
 
+.offcanvas-body {
+    height: 100%;
+}
+
+.list-group {
+    width: 100%; padding: 10px;
+}
+
 .list-group a {
-    background-color: #191919;
+    background-color: #303030;
     border: none; color: white;
     cursor: pointer;
 }
 
+.list-group a.active {
+    background-color: #DC7633;
+}
+
+.list-group a.active:hover {
+    background-color: #D35400;
+}
+
 .list-group a:hover {
-    background-color: #252525;
+    background-color: #404040;
     color: white;
 }
 
-@media (min-width: 992px) {
-    #users-list {
-        height: calc(100vh - 60px);
+@media (max-width: 992px) {
+    .offcanvas-body {
+        padding: 0;
     }
 }
 </style>

@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="nav-user d-flex" v-if="logged">
-                <span>{{ username }}</span>
+                <router-link class="nav-link" to="/profile">{{ username }}</router-link>
             </div>
             <button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar" aria-controls="navbar">
                 <span class="navbar-toggler-icon"></span>
