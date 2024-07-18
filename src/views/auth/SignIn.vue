@@ -4,8 +4,8 @@
       <h1 class="mb-3 text-center text-white">Sign In</h1>
       <form @submit.prevent="signIn" class="mx-auto">
         <div class="mb-3 mx-3">
-          <label for="form-username" class="form-label">Username</label>
-          <input type="text" v-model="user.username" id="form-username" class="form-control shadow-none" placeholder="Enter your username"/>
+          <label for="form-email" class="form-label">E-mail</label>
+          <input type="text" v-model="user.email" id="form-email" class="form-control shadow-none" placeholder="Enter your e-mail"/>
         </div>
         <div class="mb-5 mx-3">
           <label for="form-password" class="form-label">Password</label>
@@ -17,7 +17,7 @@
         <p class="mx-3 text-center sign-link">
           <router-link to="/sign-up">Sign Up</router-link>
         </p>
-        <p v-if="error" class="form-text text-center">Username or password are incorrects!</p>
+        <p v-if="error" class="form-text text-center">E-mail or password are incorrects!</p>
       </form>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
   data () {
       return {
           user: {
-              username: "",
+              email: "",
               password: ""
           },
           error: false
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     signIn () {
-        if (this.user.username && this.user.password) {
+        if (this.user.email && this.user.password) {
           usersService.login(this.user)
             .then(response => {
               if (response.status == 200) {

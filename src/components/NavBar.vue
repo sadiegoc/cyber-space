@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="nav-user d-flex" v-if="logged">
-                <router-link class="nav-link" to="/profile">{{ username }}</router-link>
+                <router-link class="nav-link" to="/profile">{{ myself.username }}</router-link>
             </div>
             <button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar" aria-controls="navbar">
                 <span class="navbar-toggler-icon"></span>
@@ -44,12 +44,23 @@
 <script>
 export default {
     name: 'NavBar',
-    props: ['logged', 'username'],
+    props: ['logged'],
+    data () {
+        return {
+            myself: {}
+        }
+    },
     methods: {
         logout () {
             localStorage.clear();
             this.$router.push({ name: 'SignIn' });
+        },
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
         }
+    },
+    mounted () {
+        this.loadMyself();
     }
 }
 </script>

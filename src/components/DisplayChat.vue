@@ -1,14 +1,14 @@
 <template>
     <div class="display-chat">
         <ul class="messages">
-            <li v-for="m in messages" :key="m.id" :class="m.owner == myself ? 'right' : 'left'">
+            <li v-for="m in messages" :key="m.id" :class="m.owner == myself.username ? 'right' : 'left'">
                 <span>{{ m.content }}</span>
             </li>
             <div ref="anchor" id="anchor"></div>
         </ul>
         <div class="form">
-            <input @keyup.enter="send" id="message" ref="message" v-model="message" type="text" autocomplete="off"/>
-            <button @click="send" class="btn">Send</button>
+            <input @keyup.enter="send" id="message" ref="message" :disabled="!receiver" v-model="message" type="text" autocomplete="off"/>
+            <button :disabled="!receiver" @click="send" class="btn">Send</button>
         </div>
     </div>
 </template>
@@ -17,10 +17,11 @@ import MessagesService from '@/services/messages.service';
 
 export default {
     name: 'DisplayChat',
-    props: ['myself', 'receiver'],
+    props: ['receiver'],
     data () {
         return {
             socket: null,
+            myself: {},
             message: "",
             messages: []
         }
@@ -28,13 +29,10 @@ export default {
     methods: {
         send () {
             if (this.message) {
-                var msg = { owner: this.myself, content: this.message };
-                this.appendMsg(msg);
+                var msg = { owner: this.myself.username, content: this.message };
                 this.sendSocketMsg(msg);
                 this.message = "";
             }
-            this.scroll();
-            this.focus();
         },
         scroll () {
             window.location.href = '#anchor';
@@ -47,25 +45,28 @@ export default {
         appendMsg (msg) {
             this.messages.push(msg);
         },
-        sendSocketMsg (msg) {
-            MessagesService.send(msg)
-                .then(response => console.log(response.data))
+        async sendSocketMsg (msg) {
+            await MessagesService.send(this.receiver, msg)
+                .then(response => this.appendMsg({ owner: response.data.owner, content: response.data.content }))
+                .then(() => { this.scroll(); this.focus(); })
                 .catch(err => console.log(err.message));
+        },
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
         }
     },
-    async mounted () {
+    mounted () {
+        this.loadMyself();
         MessagesService.setupSocketConnection();
-        await MessagesService.getAll().then(response => this.messages = response.data);
-        MessagesService.socket.on(this.myself, (data) => {
+        MessagesService.socket.on(this.myself.username, (data) => {
             this.messages.push(JSON.parse(data));
             this.scroll();
         });
-        this.scroll();
-        this.focus();
     },
     watch: {
-        receiver (value) {
+        async receiver (value) {
             console.log(value)
+            await MessagesService.getAll().then(response => this.messages = response.data).then(() => { this.scroll(); this.focus(); });
         }
     },
     unmounted () {
@@ -144,6 +145,10 @@ export default {
 
 .form .btn:hover {
     background-color: #D35400;
+}
+
+.form .btn:disabled {
+    border: none;
 }
 
 @media (max-width: 992px) {

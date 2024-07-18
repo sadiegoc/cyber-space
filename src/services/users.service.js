@@ -6,7 +6,7 @@ class UsersService {
     }
 
     login (user) {
-        return http.get(`/auth?username=${user.username}&&password=${user.password}`);
+        return http.get(`/auth?email=${user.email}&&password=${user.password}`);
     }
 
     get () {

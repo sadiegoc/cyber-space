@@ -1,7 +1,7 @@
 <template>
     <div class="home">
-        <UsersList :myself="this.user.username" @receiver="(rec) => receive(rec)"/>
-        <DisplayChat :myself="this.user.username" :receiver="this.receiver"/>
+        <UsersList @receiver="(rec) => receive(rec)"/>
+        <DisplayChat :receiver="this.receiver"/>
     </div>
 </template>
 <script>
@@ -16,14 +16,12 @@ export default {
     },
     data () {
         return {
-            user: {},
             receiver: ""
         }
     },
     methods: {
         loadData () {
-            this.user = JSON.parse(localStorage.getItem("user"));
-            if (!this.user)
+            if (!JSON.parse(localStorage.getItem("user")))
                 this.$router.push({ name: 'SignUp' });
         },
         receive (rec) {
@@ -32,7 +30,7 @@ export default {
     },
     mounted () {
         this.loadData();
-        this.$emit('logged', true, this.user.username);
+        this.$emit('logged', true);
     }
 }
 </script>

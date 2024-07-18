@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // create and save a new user
 exports.create = (req, res) => {
     // validate request
-    if (!req.body.username || !req.body.password || !req.body.name) {
+    if (!req.body.email || !req.body.username || !req.body.password || !req.body.name) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     // create a user object
     const auth = {
         name: req.body.name,
+        email: req.body.email,
         username: req.body.username,
         password: req.body.password
     }
@@ -26,7 +27,7 @@ exports.create = (req, res) => {
             if (err.name == "SequelizeUniqueConstraintError") {
                 res.status(200).send({
                     status: "error",
-                    message: "username"
+                    message: err.fields
                 });
             } else {
                 res.status(500).send({
@@ -38,10 +39,10 @@ exports.create = (req, res) => {
 };
 
 exports.get = (req, res) => {
-    const u = req.query.username;
+    const e = req.query.email;
     const p = req.query.password;
 
-    const opt = (u && p) ? { where: { [Op.and] : [{ username: u }, { password: p }] } } : { attributes: ['name', 'username'] };
+    const opt = (e && p) ? { where: { [Op.and] : [{ email: e }, { password: p }] } } : { attributes: ['name', 'username'] };
 
     Auth.findAll(opt)
         .then(data => res.status(200).send(data))

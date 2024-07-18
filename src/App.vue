@@ -3,7 +3,7 @@
     <NavBar :logged="logged" :username="username"/>
   </header>
   <main>
-    <router-view @logged="(log, username) => receive(log, username)"></router-view>
+    <router-view @logged="(log) => receive(log)"></router-view>
   </main>
   <footer>
     <FooterComponent/>
@@ -20,13 +20,11 @@ export default {
   data () {
     return {
       logged: false,
-      username: ""
     }
   },
   methods: {
-    receive (log, username) {
+    receive (log) {
       this.logged = log;
-      this.username = username;
     }
   }
 }

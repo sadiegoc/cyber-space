@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     socket.on("message", (receiver, data) => {
         // console.log("message received by the server: " + data);
         // socket.broadcast.emit("broadcast", data);
-        socket.to(receiver).emit(data);
+        socket.broadcast.emit(receiver, data);
         // console.log("message sent by the server: " + data);
     });
 });

@@ -7,7 +7,7 @@
             </div>
             <div class="offcanvas-body">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action" :class="{ active: active }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
+                    <a class="list-group-item list-group-item-action" :class="{ active: (u.username == selected) }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
                         {{ u.name + '/@' + u.username }}
                     </a>
                 </div>
@@ -20,24 +20,28 @@ import usersService from '@/services/users.service';
 
 export default {
     name: 'UsersList',
-    props: ['myself'],
     data () {
         return {
+            myself: {},
             users: [],
-            active: false
+            selected: ""
         }
     },methods: {
-        loadUsers () {
-            usersService.get().then(response => {
-                this.users = response.data.filter(user => user.username != this.myself);
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
+        },
+        async loadUsers () {
+            await usersService.get().then(response => {
+                this.users = response.data.filter(user => user.username != this.myself.username);
             });
         },
-        selectChat (rec) {
-            this.$emit('receiver', rec);
-            this.active = true;
+        selectChat (receiver) {
+            this.$emit('receiver', receiver);
+            this.selected = receiver;
         }
     },
     mounted () {
+        this.loadMyself();
         this.loadUsers();
     }
 }

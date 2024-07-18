@@ -8,6 +8,10 @@
           <input type="text" v-model="user.name" id="form-name" class="form-control shadow-none" placeholder="Enter your name"/>
         </div>
         <div class="mb-3 mx-3">
+          <label for="form-email" class="form-label">E-mail</label>
+          <input type="email" v-model="user.email" id="form-email" class="form-control shadow-none" placeholder="Enter your e-mail"/>
+        </div>
+        <div class="mb-3 mx-3">
           <label for="form-username" class="form-label">Username</label>
           <input type="text" v-model="user.username" id="form-username" class="form-control shadow-none" placeholder="Enter your username"/>
         </div>
@@ -21,7 +25,7 @@
         <p class="mx-3 text-center sign-link">
           <router-link to="/sign-in">Sign In</router-link>
         </p>
-        <p v-if="error" class="form-text text-center">This username already exists!</p>
+        <p v-if="error" class="form-text text-center">{{ error }}</p>
       </form>
     </div>
   </div>
@@ -35,19 +39,20 @@ export default {
       return {
           user: {
               name: "",
+              email: "",
               username: "",
               password: ""
           },
-          error: false
+          error: ""
       }
   },
   methods: {
     signUp () {
-      if (this.user.name && this.user.username && this.user.password) {
+      if (this.user.name && this.user.email && this.user.username && this.user.password) {
         usersService.register(this.user)
           .then(response => {
-            if (response.data.message == "username")
-              this.error = true;
+            if (response.data.status == "error")
+              this.error = response.data.message.email ? "This e-mail already exists." : "This username already exists.";
             else {
               this.redirect();
             }

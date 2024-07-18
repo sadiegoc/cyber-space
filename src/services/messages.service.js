@@ -13,8 +13,8 @@ class MessagesService {
             this.socket.disconnect();
     }
 
-    send (data) {
-        this.socket.emit("message", data.owner, JSON.stringify(data));
+    send (receiver, data) {
+        this.socket.emit("message", receiver, JSON.stringify(data));
         return http.post('/messages', data);
     }
 
