@@ -18,7 +18,6 @@ exports.create = (req, res) => {
     }
 
     // save user in the database
-    console.log(auth);
     Auth.create(auth)
         .then(data => {
             res.send(data);
@@ -42,13 +41,13 @@ exports.get = (req, res) => {
     const u = req.query.username;
     const p = req.query.password;
 
-    if (u && p) {
-        Auth.findAll({ where: { [Op.and] : [{ username: u }, { password: p }] } })
-            .then(data => res.status(200).send(data))
-            .catch(err => {
-                res.status(500).send({ message: err.message });
-            });
-    } else res.status(200).send({ status: "error" });
+    const opt = (u && p) ? { where: { [Op.and] : [{ username: u }, { password: p }] } } : { attributes: ['name', 'username'] };
+
+    Auth.findAll(opt)
+        .then(data => res.status(200).send(data))
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
 };
 
 exports.update = (req, res) => {

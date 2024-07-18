@@ -5,6 +5,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="offcanvas-lg offcanvas-end" tabindex="-1" id="navbar" aria-labelledby="navbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title">Menu</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" data-bs-target="#navbar" aria-label="Close"></button>
+                </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav">
                         <li class="nav-item" v-if="logged">
@@ -52,6 +56,11 @@ export default {
 <style>
 .navbar {
     background-color: #111; height: 60px;
+    color: white;
+}
+
+.offcanvas-lg {
+    background-color: #161616;
     color: white;
 }
 

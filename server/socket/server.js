@@ -24,9 +24,10 @@ io.on('connection', (socket) => {
         console.log(`user ${socket.id} left`)
     });
 
-    socket.on("message", (data) => {
+    socket.on("message", (receiver, data) => {
         // console.log("message received by the server: " + data);
-        socket.broadcast.emit("broadcast", data);
+        // socket.broadcast.emit("broadcast", data);
+        socket.to(receiver).emit(data);
         // console.log("message sent by the server: " + data);
     });
 });

@@ -9,6 +9,10 @@ class UsersService {
         return http.get(`/auth?username=${user.username}&&password=${user.password}`);
     }
 
+    get () {
+        return http.get('/auth');
+    }
+
     update (id, data) {
         return http.put(`/auth/${id}`, data);
     }

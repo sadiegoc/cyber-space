@@ -17,7 +17,7 @@ import MessagesService from '@/services/messages.service';
 
 export default {
     name: 'DisplayChat',
-    props: ['myself'],
+    props: ['myself', 'receiver'],
     data () {
         return {
             socket: null,
@@ -56,12 +56,17 @@ export default {
     async mounted () {
         MessagesService.setupSocketConnection();
         await MessagesService.getAll().then(response => this.messages = response.data);
-        MessagesService.socket.on('broadcast', (data) => {
+        MessagesService.socket.on(this.myself, (data) => {
             this.messages.push(JSON.parse(data));
             this.scroll();
         });
         this.scroll();
         this.focus();
+    },
+    watch: {
+        receiver (value) {
+            console.log(value)
+        }
     },
     unmounted () {
         MessagesService.disconnect();
@@ -93,6 +98,10 @@ export default {
 
 .messages li, .messages span {
     padding: 8px 10px;
+}
+
+.messages span {
+    border-radius: 6px;
 }
 
 .messages li.right {
