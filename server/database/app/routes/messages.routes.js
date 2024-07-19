@@ -3,10 +3,10 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    // create a new user
+    // create a new message
     router.post("/", messages.create);
 
-    // retrieve all users
+    // get all messages
     router.get("/", messages.get);
 
     // // update a user with id

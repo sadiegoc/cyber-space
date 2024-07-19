@@ -13,14 +13,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const db = require('./app/models');
-db.sequelize.sync({ force: true })
-.then(() => {
-    console.log("drop and re-sync db");
-})
-.catch((err) => {
-    console.log("failed to sync db: " + err)
-});
+// const db = require('./app/models');
+// db.sequelize.sync({ force: true })
+// .then(() => {
+//     console.log("drop and re-sync db");
+// })
+// .catch((err) => {
+//     console.log("failed to sync db: " + err)
+// });
 
 app.get("/", (req, res) => {
     res.json({ message: "database server running" });

@@ -20,6 +20,11 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.auth = require("./auth.model.js")(sequelize, Sequelize);
-db.message = require("./message.model.js")(sequelize, Sequelize);
+// db.message = require("./message.model.js")(sequelize, Sequelize);
+
+db.createTable = (name) => {
+    db.table = require("./message.model.js")(sequelize, Sequelize, name);
+    db.sequelize.sync();
+}
 
 module.exports = db;

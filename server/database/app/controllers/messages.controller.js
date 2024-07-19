@@ -1,21 +1,29 @@
 const db = require('../models');
-const Message = db.message;
+// const Message = db.message;
 
 // save a new message in the table messages
 exports.create = (req, res) => {
     // validate request
-    if (!req.body.owner || !req.body.content) {
+    if (!req.body.toSave || !req.body.sender || !req.body.receiver || !req.body.content) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
 
+    // where to save message
+    const toSave = req.body.toSave;
+
     // create a message object
     const message = {
-        owner: req.body.owner,
+        sender: req.body.sender,
+        receiver: req.body.receiver,
         content: req.body.content,
     }
 
-    console.log(message)
+    const tableName = (toSave == message.sender) ? `${toSave}_${message.receiver}` : `${toSave}_${message.sender}`;
+
+    // create a table if not exists
+    db.createTable(tableName);
+    const Message = db.table;
 
     // save message in the table
     Message.create(message)
@@ -29,11 +37,20 @@ exports.create = (req, res) => {
 
 // get all messages
 exports.get = (req, res) => {
-    Message.findAll()
-        .then(data => res.status(200).send(data))
+    const sender = req.query.sender;
+    const receiver = req.query.receiver;
+    const tableName = `${sender}_${receiver}`;
+
+    db.createTable(tableName);
+    const table = db.table;
+    table.findAll()
+        .then(data => {
+            res.status(200).send(data)
+        })
         .catch(err => {
             res.status(200).send({ message: err.message });
         });
+    
 };
 
 // exports.update = (req, res) => {

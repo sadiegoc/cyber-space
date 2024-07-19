@@ -13,13 +13,16 @@ class MessagesService {
             this.socket.disconnect();
     }
 
-    send (receiver, data) {
-        this.socket.emit("message", receiver, JSON.stringify(data));
+    send (data) {
+        this.socket.emit("message", data);
+    }
+
+    save (data) {
         return http.post('/messages', data);
     }
 
-    getAll () {
-        return http.get("/messages");
+    getChat (sender, receiver) {
+        return http.get(`/messages?sender=${sender}&&receiver=${receiver}`);
     }
 
     // update (id, data) {
