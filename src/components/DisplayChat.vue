@@ -29,7 +29,7 @@ export default {
     methods: {
         send () {
             if (this.message && this.receiver) {
-                const msg = this.createMessage(this.myself.username);
+                const msg = this.createMessage();
                 this.sendMessage(msg);
                 this.message = "";
             }
