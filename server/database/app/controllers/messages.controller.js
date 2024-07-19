@@ -19,14 +19,19 @@ exports.create = (req, res) => {
         content: req.body.content,
     }
 
-    const tableName = (toSave == message.sender) ? `${toSave}_${message.receiver}` : `${toSave}_${message.sender}`;
+    // create both tables if not exists
+    if (toSave == message.sender) {
+        db.createTable(`${message.receiver}_${toSave}`);
+        db.createTable(`${toSave}_${message.receiver}`);
+    } else {
+        db.createTable(`${message.sender}_${toSave}`);
+        db.createTable(`${toSave}_${message.sender}`);
+    }
 
-    // create a table if not exists
-    db.createTable(tableName);
-    const Message = db.table;
+    const myTable = db.table;
 
     // save message in the table
-    Message.create(message)
+    myTable.create(message)
         .then(data => {
             res.send(data);
         })

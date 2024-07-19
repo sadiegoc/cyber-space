@@ -62,8 +62,8 @@ export default {
           });
       }
     },
-    redirect () {
-      localStorage.setItem("user", JSON.stringify({ name: this.user.name, username: this.user.username }));
+    async redirect () {
+      await localStorage.setItem("user", JSON.stringify({ name: this.user.name, username: this.user.username }));
       this.$router.push({ name: 'HomePage' });
     },
     loadData () {

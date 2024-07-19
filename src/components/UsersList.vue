@@ -7,7 +7,7 @@
             </div>
             <div class="offcanvas-body">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action" :class="{ active: (u.username == selected) }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
+                    <a class="list-group-item list-group-item-action" :class="{ active: (u.username == selected), notification: (notification == u.username) }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
                         {{ u.name + '/@' + u.username }}
                     </a>
                 </div>
@@ -20,29 +20,30 @@ import usersService from '@/services/users.service';
 
 export default {
     name: 'UsersList',
+    props: ['notification'],
     data () {
         return {
-            myself: {},
             users: [],
+            myself: {},
             selected: ""
         }
     },methods: {
-        loadMyself () {
-            this.myself = JSON.parse(localStorage.getItem("user"));
-        },
         async loadUsers () {
             await usersService.get().then(response => {
                 this.users = response.data.filter(user => user.username != this.myself.username);
             });
         },
-        selectChat (receiver) {
+        selectChat (receiver = null) {
             this.$emit('receiver', receiver);
             this.selected = receiver;
+        },
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
         }
     },
     mounted () {
         this.loadMyself();
-        this.loadUsers();
+        if (this.myself) this.loadUsers();
     }
 }
 </script>
@@ -70,6 +71,11 @@ export default {
     cursor: pointer;
 }
 
+.list-group a:hover {
+    background-color: #404040;
+    color: white;
+}
+
 .list-group a.active {
     background-color: #DC7633;
 }
@@ -78,9 +84,8 @@ export default {
     background-color: #D35400;
 }
 
-.list-group a:hover {
-    background-color: #404040;
-    color: white;
+.list-group a.notification {
+    background-color: #cc8b60;
 }
 
 @media (max-width: 992px) {

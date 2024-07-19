@@ -2,7 +2,7 @@
     <div class="display-chat">
         <ul class="messages">
             <li v-for="m in messages" :key="m.id" :class="m.sender == myself.username ? 'right' : 'left'">
-                <span>{{ m.content }}</span>
+                <span v-if="m.content">{{ m.content }}</span>
             </li>
             <div ref="anchor" id="anchor"></div>
         </ul>
@@ -20,8 +20,8 @@ export default {
     props: ['receiver'],
     data () {
         return {
-            socket: null,
             myself: {},
+            socket: null,
             message: "",
             messages: []
         }
@@ -47,33 +47,48 @@ export default {
             // window.location.href = '#message';
         },
         appendMsg (msg) {
+            console.log(msg)
             this.messages.push(msg);
         },
         async sendMessage (msg) {
             MessagesService.send(msg);
             await MessagesService.save(msg)
-                .then(response => this.appendMsg({ sender: response.data.sender, receiver: response.data.receiver, content: response.data.content }))
+                .then((resp) => {
+                    console.log(resp.data);
+                    this.appendMsg(resp.data)
+                })
                 .then(() => { this.scroll(); this.focus(); })
                 .catch(err => console.log(err.message));
         },
+        initSocket () {
+            MessagesService.setupSocketConnection();
+            MessagesService.socket.on(this.myself.username, async (data) => {
+                data = JSON.parse(data);
+                const save = { toSave: this.myself.username, sender: data.sender, receiver: data.receiver, content: data.content }
+                await MessagesService.save(save);
+                if (this.receiver == data.sender) this.appendMsg(data);
+                else this.notify(data.sender);
+                this.scroll();
+            });
+        },
         loadMyself () {
             this.myself = JSON.parse(localStorage.getItem("user"));
+        },
+        notify (sender = "") {
+            this.$emit('notify', sender);
         }
     },
     mounted () {
         this.loadMyself();
-        MessagesService.setupSocketConnection();
-        MessagesService.socket.on(this.myself.username, async (data) => {
-            data = JSON.parse(data);
-            const save = { toSave: this.myself.username, sender: data.sender, receiver: data.receiver, content: data.content }
-            await MessagesService.save(JSON.stringify(save));
-            this.messages.push(data);
-            this.scroll();
-        });
+        if (this.myself) this.initSocket();
     },
     watch: {
         async receiver (receiver) {
-            await MessagesService.getChat(this.myself.username, receiver).then(response => this.messages = response.data).then(() => { this.scroll(); this.focus(); });
+            await MessagesService.getChat(this.myself.username, receiver)
+                .then(response => {
+                    if (!response.data.message)
+                        this.messages = response.data
+                }).then(() => { this.scroll(); this.focus(); this.notify(); });
         }
     },
     unmounted () {

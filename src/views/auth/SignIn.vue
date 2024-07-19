@@ -41,9 +41,9 @@ export default {
         if (this.user.email && this.user.password) {
           usersService.login(this.user)
             .then(response => {
-              if (response.status == 200) {
+              if (response[0]) {
                 this.redirect(response.data[0]);
-              }
+              } else this.error = true;
             })
             .catch(err => {
               this.error = true;
@@ -51,8 +51,8 @@ export default {
             });
         }
     },
-    redirect (u) {
-      localStorage.setItem("user", JSON.stringify({ name: u.name, username: u.username }));
+    async redirect (user) {
+      await localStorage.setItem("user", JSON.stringify({ name: user.name, username: user.username }));
       this.$router.push({ name: 'HomePage' });
     },
     loadData () {

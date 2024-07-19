@@ -1,7 +1,7 @@
 <template>
     <div class="home">
-        <UsersList @receiver="(rec) => receive(rec)"/>
-        <DisplayChat :receiver="this.receiver"/>
+        <UsersList @receiver="(rec) => receive(rec)" :notification="this.notification"/>
+        <DisplayChat @notify="(not) => notify(not)" :receiver="this.receiver"/>
     </div>
 </template>
 <script>
@@ -16,20 +16,26 @@ export default {
     },
     data () {
         return {
-            receiver: ""
+            receiver: "",
+            notification: "",
+            myself: {}
         }
     },
     methods: {
-        loadData () {
-            if (!JSON.parse(localStorage.getItem("user")))
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
+            if (!this.myself)
                 this.$router.push({ name: 'SignUp' });
         },
         receive (rec) {
             this.receiver = rec;
+        },
+        notify (not) {
+            this.notification = not;
         }
     },
     mounted () {
-        this.loadData();
+        this.loadMyself();
         this.$emit('logged', true);
     }
 }
