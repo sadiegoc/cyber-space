@@ -41,7 +41,8 @@ export default {
         if (this.user.email && this.user.password) {
           usersService.login(this.user)
             .then(response => {
-              if (response[0]) {
+              console.log(response.data)
+              if (response.data) {
                 this.redirect(response.data[0]);
               } else this.error = true;
             })
