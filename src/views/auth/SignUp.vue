@@ -71,8 +71,8 @@ export default {
         this.$router.push({ name: 'HomePage' });
     }
   },
-  mounted () {
-    this.loadData();
+  async mounted () {
+    await this.loadData();
     this.$emit('logged', false);
   }
 }

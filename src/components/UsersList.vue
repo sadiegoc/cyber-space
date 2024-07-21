@@ -7,7 +7,7 @@
             </div>
             <div class="offcanvas-body">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action" :class="{ active: (u.username == selected), notification: (notification == u.username) }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
+                    <a class="list-group-item list-group-item-action" :class="{ active: (u.username == selected) }" v-for="u in users" :key="u.username" @click="selectChat(u.username)">
                         {{ u.name + '/@' + u.username }}
                     </a>
                 </div>
@@ -20,7 +20,6 @@ import usersService from '@/services/users.service';
 
 export default {
     name: 'UsersList',
-    props: ['notification'],
     data () {
         return {
             users: [],
@@ -41,8 +40,8 @@ export default {
             this.myself = JSON.parse(localStorage.getItem("user"));
         }
     },
-    mounted () {
-        this.loadMyself();
+    async mounted () {
+        await this.loadMyself();
         if (this.myself) this.loadUsers();
     }
 }

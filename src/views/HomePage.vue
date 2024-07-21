@@ -22,8 +22,8 @@ export default {
         }
     },
     methods: {
-        loadMyself () {
-            this.myself = JSON.parse(localStorage.getItem("user"));
+        async loadMyself () {
+            this.myself = await JSON.parse(localStorage.getItem("user"));
             if (!this.myself)
                 this.$router.push({ name: 'SignUp' });
         },

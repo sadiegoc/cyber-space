@@ -40,11 +40,9 @@ export default {
         },
         scroll () {
             window.location.href = '#anchor';
-            // this.$refs.anchor.
         },
         focus () {
             this.$refs.message.focus();
-            // window.location.href = '#message';
         },
         appendMsg (msg) {
             console.log(msg)
@@ -53,10 +51,7 @@ export default {
         async sendMessage (msg) {
             MessagesService.send(msg);
             await MessagesService.save(msg)
-                .then((resp) => {
-                    console.log(resp.data);
-                    this.appendMsg(resp.data)
-                })
+                .then((resp) => { this.appendMsg(resp.data); })
                 .then(() => { this.scroll(); this.focus(); })
                 .catch(err => console.log(err.message));
         },
@@ -65,21 +60,18 @@ export default {
             MessagesService.socket.on(this.myself.username, async (data) => {
                 data = JSON.parse(data);
                 const save = { toSave: this.myself.username, sender: data.sender, receiver: data.receiver, content: data.content }
-                await MessagesService.save(save);
-                if (this.receiver == data.sender) this.appendMsg(data);
-                else this.notify(data.sender);
+                await MessagesService.save(save).catch(err => console.log(err.message));
+                if (this.receiver == data.sender)
+                    this.appendMsg(data);
                 this.scroll();
             });
         },
         loadMyself () {
             this.myself = JSON.parse(localStorage.getItem("user"));
-        },
-        notify (sender = "") {
-            this.$emit('notify', sender);
         }
     },
-    mounted () {
-        this.loadMyself();
+    async mounted () {
+        await this.loadMyself();
         if (this.myself) this.initSocket();
     },
     watch: {
@@ -88,7 +80,7 @@ export default {
                 .then(response => {
                     if (!response.data.message)
                         this.messages = response.data
-                }).then(() => { this.scroll(); this.focus(); this.notify(); });
+                }).then(() => { this.scroll(); this.focus(); });
         }
     },
     unmounted () {

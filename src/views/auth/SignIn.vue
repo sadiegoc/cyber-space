@@ -41,8 +41,7 @@ export default {
         if (this.user.email && this.user.password) {
           usersService.login(this.user)
             .then(response => {
-              console.log(response.data)
-              if (response.data) {
+              if (response.data[0]) {
                 this.redirect(response.data[0]);
               } else this.error = true;
             })
@@ -61,8 +60,8 @@ export default {
         this.$router.push({ name: 'HomePage' });
     }
   },
-  mounted () {
-    this.loadData();
+  async mounted () {
+    await this.loadData();
     this.$emit('logged', false);
   }
 }
