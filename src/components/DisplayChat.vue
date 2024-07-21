@@ -84,7 +84,7 @@ export default {
     },
     watch: {
         async receiver (receiver) {
-            await MessagesService.getChat(this.myself.username, receiver)
+            await MessagesService.getChat(this.myself.username, this.myself.username, receiver)
                 .then(response => {
                     if (!response.data.message)
                         this.messages = response.data

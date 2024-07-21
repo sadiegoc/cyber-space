@@ -21,8 +21,8 @@ class MessagesService {
         return http.post('/messages', data);
     }
 
-    getChat (sender, receiver) {
-        return http.get(`/messages?sender=${sender}&&receiver=${receiver}`);
+    getChat (toSave, sender, receiver) {
+        return http.get(`/messages?toSave=${toSave}&&sender=${sender}&&receiver=${receiver}`);
     }
 
     // update (id, data) {
