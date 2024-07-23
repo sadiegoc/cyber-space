@@ -12,3 +12,12 @@ O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecion
   <img src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge"/>
 </p>
+
+<h2 align="left">Features</h2>
+- [x] Cadastro e login de usuário
+- [x] Envio e recebimento de mensagens
+- [x] Mensagens salvas em banco de dados
+- [ ] Perfil de usuário
+- [ ] Selecionar e excluir mensagens
+- [ ] Notificação de mensagens
+- [ ] Mensagens lidas e não lidas
