@@ -24,16 +24,12 @@ O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecion
 
 ### Fazendo o clone
 ```
-# clone o repositório
 $ git clone https://github.com/sadiegoc/cyber-space.git
 ```
 
 ### Baixando as dependências
 ```
-# entre na pasta
 $ cd cyber-space
-
-# instale todas as dependências
 $ npm install --save
 ```
 
