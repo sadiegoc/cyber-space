@@ -1,5 +1,6 @@
 <h1 align="center">Cyber Space</h1>
 
+### O que é
 <p align="justify">
 O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecionar uma pessoa para conversar (estando ela online ou não) e iniciar o bate-papo. Para esse projeto eu usei VueJs junto do Bootstrap para o front-end, Sequelize para fazer o banco de dados e o Socket.io para o envio de mensagens em tempo real.
 </p>
@@ -12,6 +13,8 @@ O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecion
   <img src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge"/>
 </p>
+
+### Como foi feito
 
 ### Features
 - [x] Cadastro e login de usuário
