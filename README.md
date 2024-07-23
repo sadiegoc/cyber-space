@@ -44,4 +44,3 @@ $ npm run database
 # inicie o servidor socket.io
 $ npm run socket
 ```
-Acesse o seu navegador no endereço http://localhost:8080 (ou no que o vue pedir) e divirta-se ;)
