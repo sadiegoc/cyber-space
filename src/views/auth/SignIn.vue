@@ -5,7 +5,7 @@
       <form @submit.prevent="signIn" class="mx-auto">
         <div class="mb-3 mx-3">
           <label for="form-email" class="form-label">E-mail</label>
-          <input type="text" v-model="user.email" id="form-email" class="form-control shadow-none" placeholder="Enter your e-mail"/>
+          <input type="text" v-model="user.email" id="form-email" class="form-control shadow-none" placeholder="Enter your e-mail" maxlength="60"/>
         </div>
         <div class="mb-5 mx-3">
           <label for="form-password" class="form-label">Password</label>
@@ -17,7 +17,9 @@
         <p class="mx-3 text-center sign-link">
           <router-link to="/sign-up">Sign Up</router-link>
         </p>
-        <p v-if="error" class="form-text text-center">E-mail or password are incorrects!</p>
+        <p v-if="error" class="form-text text-center">{{ error }}</p>
+        <p v-if="empty" class="form-text text-center">{{ empty }}</p>
+        <p v-if="emailLength" class="form-text text-center">{{ emailLength }}</p>
       </form>
     </div>
   </div>
@@ -33,23 +35,27 @@ export default {
               email: "",
               password: ""
           },
-          error: false
+          error: "",
+          empty: "",
+          emailLength: ""
       }
   },
   methods: {
     signIn () {
-        if (this.user.email && this.user.password) {
-          usersService.login(this.user)
-            .then(response => {
-              if (response.data[0]) {
-                this.redirect(response.data[0]);
-              } else this.error = true;
-            })
-            .catch(err => {
-              this.error = true;
-              console.warn(err);
-            });
-        }
+      this.empty = this.isEmpty() ? "Fields cannot be empty." : "";
+      this.emailLength = this.lessThan(this.user.email.length, 60) ? "The e-mail cannot be longer than 60 characters." : "";
+
+      if (!this.empty && !this.emailLength) {
+        usersService.login(this.user).then(response => {
+            if (response.data[0])
+              this.redirect(response.data[0]);
+            else
+              this.error = "E-mail or password are incorrects.";
+          }).catch(err => {
+            this.error = "Error connecting to the server.";
+            console.warn(err);
+          });
+      }
     },
     async redirect (user) {
       await localStorage.setItem("user", JSON.stringify({ name: user.name, username: user.username }));
@@ -58,11 +64,20 @@ export default {
     loadData () {
       if (localStorage.getItem("user"))
         this.$router.push({ name: 'HomePage' });
+    },
+    isEmpty () {
+      if (!this.user.email || !this.user.password)
+        return true;
+      return false;
+    },
+    lessThan (value, size) {
+      if (value <= size)
+        return false;
+      return true;
     }
   },
   async mounted () {
     await this.loadData();
-    this.$emit('logged', false);
   }
 }
 </script>

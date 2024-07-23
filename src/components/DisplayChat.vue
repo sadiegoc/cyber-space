@@ -2,7 +2,9 @@
     <div class="display-chat">
         <ul class="messages">
             <li v-for="m in messages" :key="m.id" :class="m.sender == myself.username ? 'right' : 'left'">
-                <span v-if="m.content">{{ m.content }}</span>
+                <span v-if="m.content">
+                    {{ m.content }}
+                </span>
             </li>
             <div ref="anchor" id="anchor"></div>
         </ul>
@@ -117,6 +119,7 @@ export default {
 
 .messages span {
     border-radius: 6px;
+    word-break: break-word;
 }
 
 .messages li.right {

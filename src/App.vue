@@ -1,9 +1,9 @@
 <template>
   <header>
-    <NavBar :logged="logged" :username="username"/>
+    <NavBar :username="username"/>
   </header>
   <main>
-    <router-view @logged="(log) => receive(log)"></router-view>
+    <router-view @username="(u) => logged(u)"></router-view>
   </main>
   <footer>
     <FooterComponent/>
@@ -19,12 +19,12 @@ export default {
   components: { NavBar, FooterComponent },
   data () {
     return {
-      logged: false,
+      username: false
     }
   },
   methods: {
-    receive (log) {
-      this.logged = log;
+    logged (username) {
+      this.username = username;
     }
   }
 }
