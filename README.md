@@ -1,6 +1,5 @@
-# Cyber Space
+<h1 align="center">🚀 Cyber Space 🚀</h1>
 
-## O que é:
 O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecionar uma pessoa para conversar (estando ela online ou não) e iniciar o bate-papo. Para esse projeto eu usei VueJs junto do Bootstrap para o front-end, Sequelize para fazer o banco de dados e o Socket.io para o envio de mensagens em tempo real.
 
 <p align="center">
@@ -52,17 +51,23 @@ $ git clone https://github.com/sadiegoc/cyber-space.git
 ### Baixando as dependências:
 ```
 $ cd cyber-space
+$ npm install @vue/cli --save
 $ npm install --save
 ```
 
-### Executando:
+### Executando o front-end:
 ```
-# inicie o servidor vue
+$ cd frontend
 $ npm run serve
+```
 
-# inicie o servidor sequelize
+### Executando o back-end
+```
+# database
+$ cd backend
 $ npm run database
 
-# inicie o servidor socket.io
+# socket
+$ cd backend
 $ npm run socket
 ```
