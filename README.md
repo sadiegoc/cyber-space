@@ -14,7 +14,7 @@ O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecion
 O front-end do projeto foi construído usando o VueJs e o Bootstrap, enquanto que o back-end trata-se de dois servidores express, cada um escutando numa porta específica.
 
 ### socket
-As requisições de socket (trocas de mensagens) são tratadas no arquivo `socket.js`. Nele está configurado para o socket escutar todo evento "message" que chegar. Este evento recebe um parâmetro que é justamente a mensagem enviada. Na mensagem enviada estão as informações de quem é o remetente, quem é o destinatário e qual o conteúdo dela. E então, usando o username do destinatário, eu consigo enviar uma mensagem para ele assim:
+As requisições de socket são tratadas no arquivo `socket.js`. Nele está configurado para o socket escutar todo evento "message" que chegar. Este evento recebe um parâmetro que é justamente a mensagem enviada. Na mensagem enviada estão as informações de quem é o remetente, quem é o destinatário e qual o conteúdo dela. E então, usando o username do destinatário, eu consigo enviar uma mensagem para ele assim:
 
 ```
 socket.on("message", (data) => {
