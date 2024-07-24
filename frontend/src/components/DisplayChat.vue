@@ -2,9 +2,11 @@
     <div class="display-chat">
         <ul class="messages">
             <li v-for="m in messages" :key="m.id" :class="m.sender == myself.username ? 'right' : 'left'">
-                <span v-if="m.content">
-                    {{ m.content }}
-                </span>
+                <div>
+                    <span v-if="m.content">
+                        {{ m.content }}
+                    </span>
+                </div>
             </li>
             <div ref="anchor" id="anchor"></div>
         </ul>
@@ -99,7 +101,7 @@ export default {
 }
 
 .display-chat .messages {
-    margin: 0; padding: 10px 0;
+    margin: 0; padding: 0 10px;
     height: calc(100% - 60px); width: 100%;
     list-style: none; position: absolute;
     overflow-y: scroll; display: flex; flex-direction: column;
@@ -113,29 +115,33 @@ export default {
     background-color: #DC7633;
 }
 
-.messages li, .messages span {
-    padding: 8px 10px;
+.messages li {
+    margin: 2px;
+    display: inline-block;
+}
+
+.messages div {
+    width: fit-content;
+    display: block;
+    text-align: justify;
+    padding: 8px;
+    border-radius: 8px;
 }
 
 .messages span {
-    border-radius: 6px;
     word-break: break-word;
 }
 
-.messages li.right {
-    text-align: right;
-}
-
-.messages li.right span {
+.messages li.right div {
+    float: right;
     background-color: #D35400;
+    border-bottom-right-radius: 0;
 }
 
-.messages li.left {
-    text-align: left;
-}
-
-.messages li.left span {
+.messages li.left div {
+    float: left;
     background-color: #DC7633;
+    border-bottom-left-radius: 0;
 }
 
 .form {
@@ -175,6 +181,12 @@ export default {
 
     .display-chat .messages {
         width: 100vw;
+    }
+}
+
+@media (min-width: 500px) {
+    .messages div {
+        max-width: 500px;
     }
 }
 </style>

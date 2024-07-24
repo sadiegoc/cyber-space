@@ -23,8 +23,7 @@ export default {
     methods: {
         loadMyself () {
             this.myself = JSON.parse(localStorage.getItem("user"));
-            if (!this.myself)
-                this.$router.push({ name: 'SignUp' });
+            if (!this.myself) this.$router.push({ name: 'SignUp' });
             else this.$emit('username', this.myself.username);
         },
         receive (rec) {

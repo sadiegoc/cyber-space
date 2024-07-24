@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize, name) => {
             type: Sequelize.STRING
         },
         content: {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         }
     }, {
         freezeTableName: true
