@@ -78,6 +78,7 @@ export default {
   },
   async mounted () {
     await this.loadData();
+    this.$emit('username');
   }
 }
 </script>

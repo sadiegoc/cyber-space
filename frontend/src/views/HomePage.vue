@@ -21,8 +21,8 @@ export default {
         }
     },
     methods: {
-        async loadMyself () {
-            this.myself = await JSON.parse(localStorage.getItem("user"));
+        loadMyself () {
+            this.myself = JSON.parse(localStorage.getItem("user"));
             if (!this.myself)
                 this.$router.push({ name: 'SignUp' });
             else this.$emit('username', this.myself.username);
@@ -31,8 +31,8 @@ export default {
             this.receiver = rec;
         }
     },
-    mounted () {
-        this.loadMyself()
+    async mounted () {
+        await this.loadMyself()
     }
 }
 </script>

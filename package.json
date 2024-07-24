@@ -1,0 +1,23 @@
+{
+  "name": "cyber-space",
+  "version": "1.0.0",
+  "description": "## O que é: O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecionar uma pessoa para conversar (estando ela online ou não) e iniciar o bate-papo. Para esse projeto eu usei VueJs junto do Bootstrap para o front-end, Sequelize para fazer o banco de dados e o Socket.io para o envio de mensagens em tempo real.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sadiegoc/cyber-space.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sadiegoc/cyber-space/issues"
+  },
+  "homepage": "https://github.com/sadiegoc/cyber-space#readme",
+  "dependencies": {
+    "@vue/cli": "^5.0.8"
+  }
+}

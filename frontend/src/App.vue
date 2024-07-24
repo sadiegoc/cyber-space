@@ -1,13 +1,15 @@
 <template>
-  <header>
-    <NavBar :username="username"/>
-  </header>
-  <main>
-    <router-view @username="(u) => logged(u)"></router-view>
-  </main>
-  <footer>
-    <FooterComponent/>
-  </footer>
+  <div>
+    <header>
+      <NavBar :username="username" :logged="log"/>
+    </header>
+    <main>
+      <router-view @username="(u = null) => logged(u)"></router-view>
+    </main>
+    <footer>
+      <FooterComponent/>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -19,12 +21,16 @@ export default {
   components: { NavBar, FooterComponent },
   data () {
     return {
-      username: false
+      username: "",
+      log: false
     }
   },
   methods: {
     logged (username) {
-      this.username = username;
+      if (username) {
+        this.username = username;
+        this.log = true;
+      } else this.log = false;
     }
   }
 }
