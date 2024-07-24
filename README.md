@@ -12,7 +12,7 @@ O Cyber Space é um chat de conversa onde você pode criar a sua conta, selecion
 ## Como funciona:
 O front-end do projeto foi construído usando o VueJs e o Bootstrap, enquanto que o back-end trata-se de dois servidores express, cada um escutando numa porta específica.
 
-### socket
+### + socket
 As requisições de socket são tratadas no arquivo `socket.js`. Nele está configurado para o socket escutar todo evento "message" que chegar. Este evento recebe um parâmetro que é justamente a mensagem enviada. Na mensagem enviada estão as informações de quem é o remetente, quem é o destinatário e qual o conteúdo dela. E então, usando o username do destinatário, eu consigo enviar uma mensagem para ele assim:
 
 ```
@@ -25,12 +25,12 @@ Dentro do VueJs, assim que o usuário é logado, uma escuta com referência ao s
 socket.on(my username, (data) => { ... });
 ```
 
-### database
+### + database
 O banco de dados foi criado com arquitetura MVC (Model, View, Controller). Mais um servidor express está rodando aqui no arquivo `server.js`. Note que dentro de models há três arquivos, um para a tabela de registro de usuários, outro para as tabelas de chats e um terceiro que importa as configurações do banco de dados, une os modelos e exporta um objeto que será utilizado pelo controlador.
 
 Para cada chat iniciado é criado uma nova tabela através da função `createTable (name)` em `index.js`. Nela a variável `db.table` recebe a instância do modelo da tabela de mensagens e logo em seguida a função `db.sequelize.sync()` executa o query necessário para criar a tabela caso ela não exista. O nome de cada tabela é formado por dois usernames separados por underline (ex: user1_user2). O primeiro username indica o dono da tabela e o segundo indica o destinatário. Isso quer dizer que para cada chat de conversa existem duas tabelas, uma para cada usuário envolvido na conversa. Dessa forma, qualquer um deles pode apagar mensagens sem que isso afete o chat do outro.
 
-### front-end
+### + front-end
 A comunicação com o back-end acontece a partir do arquivo `http-common.js` - que faz o papel do cliente na comunicação com o banco de dados - e dos serviços em `src/services/` que tratam os eventos de requisição acionados pelo cliente quando ele cria uma conta nova, faz login, envia uma mensagem e etc.
 
 ## Features:
@@ -43,25 +43,25 @@ A comunicação com o back-end acontece a partir do arquivo `http-common.js` - q
 - [ ] Mensagens lidas e não lidas
 
 ## Como usar:
-### Fazendo o clone:
+### + Fazendo o clone:
 ```
 $ git clone https://github.com/sadiegoc/cyber-space.git
 ```
 
-### Baixando as dependências:
+### + Baixando as dependências:
 ```
 $ cd cyber-space
 $ npm install @vue/cli --save
 $ npm install --save
 ```
 
-### Executando o front-end:
+### + Executando o front-end:
 ```
 $ cd frontend
 $ npm run serve
 ```
 
-### Executando o back-end
+### + Executando o back-end
 ```
 # database
 $ cd backend
