@@ -33,14 +33,16 @@ export default {
     methods: {
         send () {
             if (this.message && this.receiver) {
-                const msg = this.createMessage();
-                this.sendMessage(msg);
+                const msgMyTable = this.createMessage(this.myself.username);
+                const msgTheirTable = this.createMessage(this.receiver);
+                this.sendMessage(msgMyTable);
+                this.saveMessage(msgMyTable, msgTheirTable);
                 this.message = "";
             }
             this.focus();
         },
-        createMessage () {
-            return { toSave: this.myself.username, sender: this.myself.username, receiver: this.receiver, content: this.message }
+        createMessage (toSave) {
+            return { toSave: toSave, sender: this.myself.username, receiver: this.receiver, content: this.message }
         },
         scroll () {
             window.location.href = '#anchor';
@@ -48,25 +50,23 @@ export default {
         focus () {
             this.$refs.message.focus();
         },
-        appendMsg (msg) {
-            console.log(msg)
-            this.messages.push(msg);
-        },
         async sendMessage (msg) {
             MessagesService.send(msg);
-            await MessagesService.save(msg)
-                .then((resp) => { this.appendMsg(resp.data); })
+        },
+        async saveMessage (myMessage, theirMessage) {
+            await MessagesService.save(myMessage)
+                .then((resp) => { this.messages.push(resp.data); })
                 .then(() => { this.scroll(); this.focus(); })
                 .catch(err => console.log(err.message));
+
+            await MessagesService.save(theirMessage).catch(err => console.log(err.message));
         },
         initSocket () {
             MessagesService.setupSocketConnection();
             MessagesService.socket.on(this.myself.username, async (data) => {
                 data = JSON.parse(data);
-                const save = { toSave: this.myself.username, sender: data.sender, receiver: data.receiver, content: data.content }
-                await MessagesService.save(save).catch(err => console.log(err.message));
                 if (this.receiver == data.sender)
-                    this.appendMsg(data);
+                    this.messages.push(data);
                 this.scroll();
             });
         },
@@ -80,7 +80,7 @@ export default {
     },
     watch: {
         async receiver (receiver) {
-            await MessagesService.getChat(this.myself.username, this.myself.username, receiver)
+            await MessagesService.getChat(this.myself.username, receiver)
                 .then(response => {
                     if (!response.data.message)
                         this.messages = response.data

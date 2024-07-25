@@ -1,17 +1,4 @@
 const db = require('../models');
-// const Message = db.message;
-
-function createBothTables (toSave, sender, receiver) {
-    if (toSave == sender) {
-        db.createTable(`${receiver}_${toSave}`);
-        db.createTable(`${toSave}_${receiver}`);
-        console.log(`table receiver: ${receiver}_${toSave}`);
-        console.log(`table me: ${toSave}_${receiver}`);
-    } else {
-        db.createTable(`${sender}_${toSave}`);
-        db.createTable(`${toSave}_${sender}`);
-    }
-}
 
 // save a new message in the table messages
 exports.create = (req, res) => {
@@ -21,7 +8,6 @@ exports.create = (req, res) => {
         return;
     }
 
-    // where to save message
     const toSave = req.body.toSave;
 
     // create a message object
@@ -31,10 +17,13 @@ exports.create = (req, res) => {
         content: req.body.content,
     }
 
-    // create both tables if not exists
-    createBothTables(toSave, message.sender, message.receiver);
+    // where to save message
+    const tableName = (toSave == message.sender) ? `${toSave}_${message.receiver}` : `${toSave}_${message.sender}`;
 
-    // get my table
+    // create table if not exists
+    db.createTable(tableName);
+
+    // get table
     const myTable = db.table;
 
     // save message in the table
@@ -49,11 +38,13 @@ exports.create = (req, res) => {
 
 // get all messages
 exports.get = (req, res) => {
-    const toSave = req.query.toSave;
     const sender = req.query.sender;
     const receiver = req.query.receiver;
 
-    createBothTables(toSave, sender, receiver);
+    console.log(sender, receiver)
+
+    // create table if not exists
+    db.createTable(`${sender}_${receiver}`);
     const table = db.table;
     
     table.findAll()

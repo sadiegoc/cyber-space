@@ -32,7 +32,7 @@ export default {
                 this.users = response.data.filter(user => user.username != this.myself.username);
             });
         },
-        selectChat (receiver = null) {
+        selectChat (receiver) {
             this.$emit('receiver', receiver);
             this.selected = receiver;
         },
